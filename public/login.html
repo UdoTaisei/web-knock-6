@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>ログイン</title>
+</head>
+<body>
+  <h1>ログイン</h1>
+
+  <form id="loginForm">
+    <div>
+      <label>ユーザ名：</label>
+      <input id="username" required />
+    </div>
+    <div>
+      <label>パスワード：</label>
+      <input id="password" required />
+    </div>
+    <button type="submit">ログイン</button>
+  </form>
+
+  <p id="msg"></p>
+
+  <script>
+    const form = document.getElementById("loginForm");
+    const msg = document.getElementById("msg");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      const res = await fetch("/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        // ★重要：Cookie（セッション）をブラウザに保存・送信させる
+        credentials: "include",
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        msg.textContent = "ログイン成功！ privateページへ移動します…";
+        location.href = "/private";
+      } else {
+        msg.textContent = "ログイン失敗：" + (data.error || "不明なエラー");
+      }
+    });
+  </script>
+</body>
+</html>

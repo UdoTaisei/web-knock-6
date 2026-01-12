@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>個人</title>
+</head>
+<body>
+  <h1>プライベートページ</h1>
+
+  <p id="status">ユーザ情報を読み込み中...</p>
+
+  <button id="logoutBtn">ログアウト</button>
+
+  <script>
+    async function loadMe() {
+      const res = await fetch("/loginstate", {
+        credentials: "include",
+      });
+
+      if (!res.ok) {
+        //未認証ならログインへ戻す
+        location.href = "/login";
+        return;
+      }
+
+      const data = await res.json();
+      document.getElementById("status").textContent =
+        `ログイン中：${data.username} (userId=${data.userId})`;
+    }
+
+    loadMe();
+
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
+      await fetch("/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+      location.href = "/login";
+    });
+  </script>
+</body>
+</html>
