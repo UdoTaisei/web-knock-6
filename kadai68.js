@@ -26,7 +26,9 @@ app.use(
   })
 );
 
-
+app.get("/login", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "login.html"));
+});
 
 //ログインAPI
 app.post("/login", (req, res) => {
@@ -56,10 +58,6 @@ app.post("/login", (req, res) => {
   } catch (e) {
     res.status(500).json({ error: "サーバ内部エラー" });
   }
-});
-
-app.get("/login", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "login.html"));
 });
 
 app.get("/private", requireLogin, (req, res) => {
