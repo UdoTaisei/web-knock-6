@@ -34,7 +34,6 @@
       const res = await fetch("/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        // ★重要：Cookie（セッション）をブラウザに保存・送信させる
         credentials: "include",
         body: JSON.stringify({ username, password }),
       });
